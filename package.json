@@ -1,0 +1,47 @@
+{
+  "name": "failover-dns",
+  "version": "1.0.0",
+  "description": "Use local cache dns query result when dns query fail.",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "scripts": {
+    "test": "npm run lint && mocha -t 5000 -r intelli-espower-loader test/*.test.js",
+    "test-cov": "istanbul cover _mocha -- -t 5000 -r intelli-espower-loader test/*.test.js",
+    "lint": "eslint test *.js",
+    "ci": "npm run lint && npm run test-cov",
+    "autod": "autod -w --prefix '^'"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "autod": "*",
+    "eslint": "3",
+    "eslint-config-egg": "3",
+    "intelli-espower-loader": "^1.0.1",
+    "istanbul": "*",
+    "mm": "^2.0.0",
+    "mocha": "*",
+    "pedding": "^1.0.0",
+    "power-assert": "^1.4.1"
+  },
+  "homepage": "https://github.com/node-modules/failover-dns",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/node-modules/failover-dns.git",
+    "web": "https://github.com/node-modules/failover-dns"
+  },
+  "bugs": {
+    "url": "https://github.com/node-modules/failover-dns/issues",
+    "email": "fengmk2@gmail.com"
+  },
+  "keywords": [
+    "dns",
+    "failover-dns"
+  ],
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "author": "fengmk2 <fengmk2@gmail.com> (http://fengmk2.com)",
+  "license": "MIT"
+}
