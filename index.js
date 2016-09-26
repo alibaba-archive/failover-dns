@@ -14,13 +14,15 @@ exports.lookup = function lookup(hostname, options, callback) {
     callback = options;
     options = {};
   }
+  options = options || {};
+
+  // don't failover on `options.all = true`
   if (options.all) {
-    // don't failover on options.all
     return dns.lookup(hostname, options, callback);
   }
 
   const cacheKey = `${hostname}_${options.family}_${options.hints}`;
-  dns.lookup(hostname, options, (err, ip, family) => {
+  exports._lookupWithTimeout(hostname, options, (err, ip, family) => {
     if (err) {
       const address = DNS_LOOKUP_CACHE[cacheKey];
       if (address) {
@@ -47,5 +49,28 @@ exports.lookup = function lookup(hostname, options, callback) {
       }
     }
     callback(null, ip, family);
+  });
+};
+
+exports._lookupWithTimeout = function lookupWithTimeout(hostname, options, callback) {
+  if (!options.timeout) {
+    return dns.lookup(hostname, options, callback);
+  }
+  let timer = setTimeout(() => {
+    timer = null;
+    const cb = callback;
+    callback = null;
+    const err = new Error(`getaddrinfo TIMEOUT ${hostname}`);
+    err.options = options;
+    err.code = 'TIMEOUT';
+    cb(err);
+  }, options.timeout);
+
+  dns.lookup(hostname, options, (err, ip, family) => {
+    timer && clearTimeout(timer);
+    if (!callback) {
+      return;
+    }
+    callback(err, ip, family);
   });
 };
