@@ -96,6 +96,7 @@ describe('test/failover-dns.test.js', () => {
 
     dns.once('error', err => {
       console.log(err);
+      assert(err.name === 'DNSLookupTimeoutError');
       assert(err.message === 'getaddrinfo TIMEOUT a.alipayobjects.com');
       done();
     });
@@ -119,6 +120,7 @@ describe('test/failover-dns.test.js', () => {
     dns.lookup('foo.cnpmjs.org', { family: 4, timeout: 500 }, (err, ip, family) => {
       console.log('lookup result', err, ip, family);
       assert(err);
+      assert(err.name === 'DNSLookupTimeoutError');
       assert(err.message === 'getaddrinfo TIMEOUT foo.cnpmjs.org');
       assert(err.code === 'TIMEOUT');
       // wait for dns.lookup() done and ignore callback
@@ -140,6 +142,8 @@ describe('test/failover-dns.test.js', () => {
     dns.lookup('cnpmjs.org', { family: 6 }, (err, ip, family) => {
       console.log(err, ip, family);
       assert(err);
+      assert(err.name === 'DNSLookupError');
+      assert(err.message === 'getaddrinfo ENOTFOUND cnpmjs.org');
       done();
     });
   });

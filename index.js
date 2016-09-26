@@ -12,7 +12,7 @@ exports.DNS_LOOKUP_CACHE = DNS_LOOKUP_CACHE;
 exports.lookup = function lookup(hostname, options, callback) {
   if (typeof options === 'function') {
     callback = options;
-    options = {};
+    options = null;
   }
   options = options || {};
 
@@ -24,6 +24,9 @@ exports.lookup = function lookup(hostname, options, callback) {
   const cacheKey = `${hostname}_${options.family}_${options.hints}`;
   exports._lookupWithTimeout(hostname, options, (err, ip, family) => {
     if (err) {
+      if (err.name === 'Error') {
+        err.name = 'DNSLookupError';
+      }
       const address = DNS_LOOKUP_CACHE[cacheKey];
       if (address) {
         // emit error event for logging
@@ -61,6 +64,7 @@ exports._lookupWithTimeout = function lookupWithTimeout(hostname, options, callb
     const cb = callback;
     callback = null;
     const err = new Error(`getaddrinfo TIMEOUT ${hostname}`);
+    err.name = 'DNSLookupTimeoutError';
     err.options = options;
     err.code = 'TIMEOUT';
     cb(err);
