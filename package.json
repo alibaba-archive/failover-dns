@@ -7,8 +7,8 @@
     "index.js"
   ],
   "scripts": {
-    "test": "npm run lint && mocha -t 5000 -r intelli-espower-loader test/*.test.js",
-    "test-cov": "istanbul cover _mocha -- -t 5000 -r intelli-espower-loader test/*.test.js",
+    "test": "npm run lint && mocha -t 15000 -r intelli-espower-loader test/*.test.js",
+    "test-cov": "istanbul cover _mocha -- -t 15000 -r intelli-espower-loader test/*.test.js",
     "lint": "eslint test *.js",
     "ci": "npm run lint && npm run test-cov",
     "autod": "autod -w --prefix '^'"

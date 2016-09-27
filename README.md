@@ -23,6 +23,8 @@ failover-dns
 
 Use local cache dns query result when dns query fail.
 
+- Support dns lookup with `options.timeout`.
+
 ## Installation
 
 ```bash
@@ -37,10 +39,24 @@ const dns = require('failover-dns');
 // must listen `error` event to logging by yourself
 dns.on('error', err => console.error(err));
 
-dns.lookup('cnpmjs.org', { family: 4 }, (err, ip, family) => {
+dns.lookup('cnpmjs.org', { family: 4, timeout: 2000 }, (err, ip, family) => {
   if (err) throw err;
   console.log(ip, family);
 });
+```
+
+## Default dns query timeout
+
+Default is `0`:
+
+```js
+exports.defaultTimeout = 0;
+```
+
+Maybe you want to set global default timeout is `2000ms`:
+
+```js
+exports.defaultTimeout = 2000;
 ```
 
 ## License
