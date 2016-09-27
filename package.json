@@ -1,6 +1,6 @@
 {
   "name": "failover-dns",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Use local cache dns query result when dns query fail.",
   "main": "index.js",
   "files": [
