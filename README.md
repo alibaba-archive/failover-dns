@@ -45,6 +45,20 @@ dns.lookup('cnpmjs.org', { family: 4, timeout: 2000 }, (err, ip, family) => {
 });
 ```
 
+## Default dns query timeout
+
+Default is `0`:
+
+```js
+exports.defaultTimeout = 0;
+```
+
+Maybe you want to set global default timeout is `2000ms`:
+
+```js
+exports.defaultTimeout = 2000;
+```
+
 ## License
 
 [MIT](LICENSE)

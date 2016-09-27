@@ -9,12 +9,16 @@ module.exports = exports = new EventEmitter();
 
 exports.DNS_LOOKUP_CACHE = DNS_LOOKUP_CACHE;
 
+// you can set global timeout, default is 0
+exports.defaultTimeout = 0;
+
 exports.lookup = function lookup(hostname, options, callback) {
   if (typeof options === 'function') {
     callback = options;
     options = null;
   }
   options = options || {};
+  options.timeout = options.timeout || exports.defaultTimeout;
 
   // don't failover on `options.all = true`
   if (options.all) {
@@ -59,6 +63,7 @@ exports._lookupWithTimeout = function lookupWithTimeout(hostname, options, callb
   if (!options.timeout) {
     return dns.lookup(hostname, options, callback);
   }
+
   let timer = setTimeout(() => {
     timer = null;
     const cb = callback;
